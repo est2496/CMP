@@ -1,10 +1,3 @@
-<!-- 
-  Original Author: Calvin
-  Edited by: Estella
-  Modified Date: 2025-05-08
-  Description: This is the main HTML page for the website of CMP service catalog
--->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -919,201 +912,16 @@
 
         // ========== HELPER FUNCTIONS ==========
         function loadProductsFromStorage() {
-    // Try to load from localStorage first
-    const storedProducts = localStorage.getItem('products');
-    
-    if (storedProducts) {
-        products = JSON.parse(storedProducts);
-    } else {
-        // Initialize with default products if nothing in storage
-        products = [
-            // Elastic Cloud Servers
-            { 
-                id: 'ecs-1', 
-                name: "ECS: 2 vCPU / 0.5GB RAM / 40GB ESSD", 
-                category: "ecs", 
-                price: 3.5, 
-                description: "Basic cloud server with 2 vCPUs, 0.5GB memory and 40GB ESSD storage",
-                specs: {
-                    vcpus: 2,
-                    memory: 0.5,
-                    disk: 40,
-                    transfer: 1,
-                    bandwidth: 30
-                }
-            },
-            { 
-                id: 'ecs-2', 
-                name: "ECS: 2 vCPU / 1GB RAM / 50GB ESSD", 
-                category: "ecs", 
-                price: 4.5, 
-                description: "Cloud server with 2 vCPUs, 1GB memory and 50GB ESSD storage",
-                specs: {
-                    vcpus: 2,
-                    memory: 1,
-                    disk: 50,
-                    transfer: 2,
-                    bandwidth: 30
-                }
-            },
-            { 
-                id: 'ecs-3', 
-                name: "ECS: 2 vCPU / 2GB RAM / 60GB ESSD", 
-                category: "ecs", 
-                price: 9, 
-                description: "Cloud server with 2 vCPUs, 2GB memory and 60GB ESSD storage",
-                specs: {
-                    vcpus: 2,
-                    memory: 2,
-                    disk: 60,
-                    transfer: 3,
-                    bandwidth: 30
-                }
-            },
-            { 
-                id: 'ecs-4', 
-                name: "ECS: 2 vCPU / 4GB RAM / 100GB ESSD", 
-                category: "ecs", 
-                price: 19, 
-                description: "Cloud server with 2 vCPUs, 4GB memory and 100GB ESSD storage",
-                specs: {
-                    vcpus: 2,
-                    memory: 4,
-                    disk: 100,
-                    transfer: 4,
-                    bandwidth: 30
-                }
-            },
-            { 
-                id: 'ecs-5', 
-                name: "ECS: 4 vCPU / 16GB RAM / 400GB ESSD", 
-                category: "ecs", 
-                price: 70, 
-                description: "High performance cloud server with 4 vCPUs, 16GB memory and 400GB ESSD storage",
-                specs: {
-                    vcpus: 4,
-                    memory: 16,
-                    disk: 400,
-                    transfer: 6,
-                    bandwidth: 30
-                }
-            },
+            // Try to load from localStorage first
+            const storedProducts = localStorage.getItem('products');
             
-            // Storage
-            { 
-                id: 'storage-1', 
-                name: "Block Storage (Standard) 100GB", 
-                category: "storage", 
-                price: 2.79, 
-                description: "100GB Block Storage (Standard Disk) with 5,000 IOPS",
-                specs: {
-                    type: "block",
-                    capacity: 100,
-                    iops: 5000,
-                    throughput: 150
-                }
-            },
-            { 
-                id: 'storage-2', 
-                name: "Object Storage 100GB", 
-                category: "storage", 
-                price: 0.80, 
-                description: "100GB Object Storage with 100MB/s throughput",
-                specs: {
-                    type: "object",
-                    capacity: 100,
-                    iops: null,
-                    throughput: 100
-                }
-            },
-            
-            // Managed Services
-            { 
-                id: 'managed-1', 
-                name: "Basic Managed Service", 
-                category: "managed", 
-                price: 13.28, 
-                description: "Basic managed services for 1 unit of virtual or physical server",
-                specs: {
-                    level: "basic",
-                    coverage: "Business Hours",
-                    response: "4 Hours",
-                    channels: "Email/Ticket"
-                }
-            },
-            { 
-                id: 'managed-2', 
-                name: "Premium Managed Service", 
-                category: "managed", 
-                price: 56.25, 
-                description: "Premium managed services for 1 unit of virtual or physical server",
-                specs: {
-                    level: "premium",
-                    coverage: "24/7",
-                    response: "1 Hour",
-                    channels: "Phone/Email/Chat"
-                }
-            },
-
-            // MySQL RDS Products
-            { 
-                id: 'mysql-1', 
-                name: "Basic MySQL HA Edition RDS", 
-                category: "mysql", 
-                price: 12885.00, 
-                description: "Basic MySQL HA Edition RDS with 2vCPU, 3GB RAM, 500GB SSD Storage",
-                specs: {
-                    vcpus: 2,
-                    ram: 3,
-                    storage: 500,
-                    edition: "HA Edition"
-                }
-            },
-            { 
-                id: 'mysql-2', 
-                name: "Standard MySQL HA Edition RDS", 
-                category: "mysql", 
-                price: 18045.00, 
-                description: "Standard MySQL HA Edition RDS with 4 vCPU, 16GB RAM, 500GB SSD Storage",
-                specs: {
-                    vcpus: 4,
-                    ram: 16,
-                    storage: 500,
-                    edition: "HA Edition"
-                }
-            },
-            { 
-                id: 'mysql-3', 
-                name: "Premium MySQL HA Edition RDS", 
-                category: "mysql", 
-                price: 28459.00, 
-                description: "Premium MySQL HA Edition RDS with 8 vCPU, 32GB RAM, 500GB SSD Storage",
-                specs: {
-                    vcpus: 8,
-                    ram: 32,
-                    storage: 500,
-                    edition: "HA Edition"
-                }
-            },
-            { 
-                id: 'mysql-4', 
-                name: "Advance MySQL HA Edition RDS", 
-                category: "mysql", 
-                price: 58612.00, 
-                description: "Advance MySQL HA Edition RDS with 16 vCPU, 64GB RAM, 500GB SSD Storage",
-                specs: {
-                    vcpus: 16,
-                    ram: 64,
-                    storage: 500,
-                    edition: "HA Edition"
-                }
+            if (storedProducts) {
+                products = JSON.parse(storedProducts);
+            } else {
+                // Save defaults to localStorage for future visits
+                localStorage.setItem('products', JSON.stringify(products));
             }
-        ];
-        
-        // Save defaults to localStorage for future visits
-        localStorage.setItem('products', JSON.stringify(products));
-    }
-}
+        }
 
         function populateStatesDropdown() {
             const stateSelect = document.getElementById('state');
@@ -1603,29 +1411,14 @@
             document.getElementById('product-form').style.display = 'none';
         }
 
-        function loadProductsFromStorage() {
-            const storedProducts = localStorage.getItem('products');
-            if (storedProducts) {
-                products = JSON.parse(storedProducts);
-            } else {
-                // Initialize with your default products only if no products exist in storage
-                products = [
-                    // Your default product definitions here
-                ];
-                localStorage.setItem('products', JSON.stringify(products));
-            }
-        }
-        
         // ========== INITIALIZE ==========
         document.addEventListener('DOMContentLoaded', function() {
             // Load products from localStorage
             loadProductsFromStorage();
     
-            // Optional: Clear cart on refresh (uncomment if needed)
-            // localStorage.removeItem('cart');
-            cart = [];
-
-    
+            // Initialize cart
+            cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
             // Load initial data
             loadCart();
             renderPricingTables();
