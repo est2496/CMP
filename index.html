@@ -912,15 +912,30 @@
 
         // ========== HELPER FUNCTIONS ==========
         function loadProductsFromStorage() {
-            // Try to load from localStorage first
-            const storedProducts = localStorage.getItem('products');
-            
-            if (storedProducts) {
-                products = JSON.parse(storedProducts);
-            } else {
-                // Save defaults to localStorage for future visits
+        // Try to load from localStorage first
+        const storedProducts = localStorage.getItem('products');
+    
+        if (storedProducts) {
+            try {
+                const parsedProducts = JSON.parse(storedProducts);
+                // Only use stored products if they're valid and not empty
+                if (Array.isArray(parsedProducts) && parsedProducts.length > 0) {
+                    products = parsedProducts;
+                } else {
+                    // If stored products are invalid, use defaults and save them
+                    localStorage.setItem('products', JSON.stringify(products));
+                }
+            } catch (e) {
+                // If parsing fails, use defaults and save them
                 localStorage.setItem('products', JSON.stringify(products));
             }
+        } else {
+            // If no stored products, use defaults and save them
+            localStorage.setItem('products', JSON.stringify(products));
+        }
+    
+        // Always render the products (whether they came from localStorage or defaults)
+        renderPricingTables();
         }
 
         function populateStatesDropdown() {
