@@ -1428,43 +1428,72 @@
 
         // ========== INITIALIZE ==========
         document.addEventListener('DOMContentLoaded', function() {
-            // Load products from localStorage
+            // 1. First ensure products are loaded (with fallback to defaults)
             loadProductsFromStorage();
     
-            // Initialize cart
-            cart = JSON.parse(localStorage.getItem('cart')) || [];
-            
-            // Load initial data
-            loadCart();
-            renderPricingTables();
-            populateStatesDropdown();
+            // 2. Initialize cart after products are loaded
+            initializeCart();
     
-            // Event listeners for order page
-            document.getElementById('clear-cart').addEventListener('click', clearCart);
+            // 3. Load UI components that depend on products and cart
+            initializeUI();
     
-            // Event listeners for checkout page
-            document.getElementById('place-order').addEventListener('click', function() {
-                if (validateForm()) {
-                    alert('Thank you for your order!');
-                    cart = [];
-                    saveCart();
-                    showTab('order-tab');
-                }
-            });
-    
-            // Event listeners for admin page
-            document.getElementById('add-product-btn').addEventListener('click', showAddForm);
-            document.getElementById('save-product').addEventListener('click', saveProduct);
-            document.getElementById('cancel-edit').addEventListener('click', hideForm);
+            // 4. Set up event listeners
+            setupEventListeners();
     
             // Demo: Enable admin access by default (remove in production)
             toggleAdminAccess(true);
-        });
+            });
 
-        function toggleAdminAccess(show) {
-            document.getElementById('admin-link').style.display = show ? 'block' : 'none';
-            document.getElementById('admin-tab-btn').style.display = show ? 'block' : 'none';
-        }
+            // Helper function to properly initialize cart
+            function initializeCart() {
+                try {
+                    const storedCart = localStorage.getItem('cart');
+                    cart = storedCart ? JSON.parse(storedCart) : [];
+        
+                    // Validate cart items against existing products
+                    cart = cart.filter(item => products.some(p => p.id === item.id.split('-')[0]));
+                    saveCart(); // Save filtered cart back to storage
+                } catch (e) {
+                    console.error('Error loading cart:', e);
+                    cart = [];
+                }
+            }
+
+            // Helper function to initialize UI components
+            function initializeUI() {
+                loadCart();
+                renderPricingTables();
+                populateStatesDropdown();
+    
+                // Show order tab by default
+                showTab('order-tab'); 
+            }
+
+            // Helper function for all event listeners
+            function setupEventListeners() {
+                // Order page
+                document.getElementById('clear-cart').addEventListener('click', clearCart);
+    
+                // Checkout page
+                document.getElementById('place-order').addEventListener('click', function() {
+                    if (validateForm()) {
+                        alert('Thank you for your order!');
+                        cart = [];
+                        saveCart();
+                        showTab('order-tab');
+                    }
+                });
+    
+                // Admin page
+                document.getElementById('add-product-btn').addEventListener('click', showAddForm);
+                document.getElementById('save-product').addEventListener('click', saveProduct);
+                document.getElementById('cancel-edit').addEventListener('click', hideForm);
+            }
+
+            function toggleAdminAccess(show) {
+                document.getElementById('admin-link').style.display = show ? 'block' : 'none';
+                document.getElementById('admin-tab-btn').style.display = show ? 'block' : 'none';
+            }
     </script>
 </body>
 </html>
