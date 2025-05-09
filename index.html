@@ -853,46 +853,60 @@
                     edition: "HA (Basic)"
                 }
             },
+            // In the products array, replace the existing MySQL products with these:
             { 
-                id: 'mysql-2', 
-                name: "Standard MySQL HA Edition RDS", 
-                category: "mysql", 
-                price: 18045.00, 
-                description: "Standard MySQL HA Edition RDS with 4 vCPU, 16GB RAM, 500GB SSD Storage",
-                specs: {
-                    vcpus: 4,
-                    ram: 16,
-                    storage: 500,
-                    edition: "HA (Standard)"
-                }
-            },
-            { 
-                id: 'mysql-3', 
-                name: "Premium MySQL HA Edition RDS", 
-                category: "mysql", 
-                price: 28459.00, 
-                description: "Premium MySQL HA Edition RDS with 8 vCPU, 32GB RAM, 500GB SSD Storage",
-                specs: {
-                    vcpus: 8,
-                    ram: 32,
-                    storage: 500,
-                    edition: "HA (Premium)"
-                }
-            },
-            { 
-                id: 'mysql-4', 
-                name: "Advance MySQL HA Edition RDS", 
-                category: "mysql", 
-                price: 58612.00, 
-                description: "Advance MySQL HA Edition RDS with 16 vCPU, 64GB RAM, 500GB SSD Storage",
-                specs: {
-                    vcpus: 16,
-                    ram: 64,
-                    storage: 500,
-                    edition: "HA (Advance)"
-                }
+              id: 'mysql-1', 
+              name: "Basic MySQL HA Edition RDS", 
+              category: "mysql", 
+              price: 12885.00, 
+              description: "Basic MySQL HA Edition RDS with 2vCPU, 8GB RAM, 500GB SSD Storage",
+              specs: {
+              vcpus: 2,
+              ram: 8,  
+              storage: 500,
+              edition: "Basic"
             }
-        ];
+          },
+          { 
+            id: 'mysql-2', 
+            name: "Standard MySQL HA Edition RDS", 
+            category: "mysql", 
+            price: 18045.00, 
+            description: "Standard MySQL HA Edition RDS with 4 vCPU, 16GB RAM, 500GB SSD Storage",
+            specs: {
+              vcpus: 4,
+              ram: 16,
+              storage: 500,
+              edition: "Standard"
+          }
+        },
+          { 
+          id: 'mysql-3', 
+          name: "Premium MySQL HA Edition RDS", 
+          category: "mysql", 
+          price: 28459.00, 
+          description: "Premium MySQL HA Edition RDS with 8 vCPU, 32GB RAM, 500GB SSD Storage",
+          specs: {
+            vcpus: 8,
+            ram: 32,
+            storage: 500,
+            edition: "Premium"
+        }
+      },
+        { 
+          id: 'mysql-4', 
+          name: "Advance MySQL HA Edition RDS", 
+          category: "mysql", 
+          price: 58612.00, 
+          description: "Advance MySQL HA Edition RDS with 16 vCPU, 64GB RAM, 500GB SSD Storage",
+          specs: {
+            vcpus: 16,
+            ram: 64,
+            storage: 500,
+            edition: "Advance"
+        }
+      }
+    ];
         
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
         const TAX_RATE = 0.08;
