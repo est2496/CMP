@@ -8,7 +8,3 @@
     Cache-Control = "no-cache, no-store, must-revalidate"
     Pragma = "no-cache"
     Expires = "0"
-
-# Optional: Debug build cache (not really needed for static sites, but harmless)
-[[plugins]]
-  package = "@netlify/plugin-debug-cache"
