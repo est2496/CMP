@@ -1,0 +1,3 @@
+[build]
+  command = "npm run build && rm -rf ./node_modules/.cache"
+  publish = "dist"  # Replace with your build output folder
