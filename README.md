@@ -1,2 +1,2 @@
 # CMP-Version-1
-CMP Service Packages version originally from Bernard, edited by Estella.
+CMP Service Packages idea originally from Bernard, edited by Estella.
