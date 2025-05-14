@@ -1,2 +1,0 @@
-[build]
-  publish = "./"  # Points to root folder (where index.html lives)
