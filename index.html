@@ -1,8 +1,8 @@
 <!-- 
   Original Author: Calvin
   Edited by: Estella
-  Modified Date: 2025-05-09
-  Description: This is the main HTML page for the website of CMP service catalog
+  Modified Date: 2025-05-14
+  Description: This is the main HTML page version 1 for the website of CMP service catalog
 -->
 
 <!DOCTYPE html>
@@ -10,6 +10,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Online Order System</title>
     <style>
         :root {
@@ -303,6 +306,52 @@
         .mysql-specs {
             display: none;
         }
+        
+        /* Modal styles */
+        #desc-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            display: none;
+            padding: 20px;
+            color: white;
+            overflow: auto;
+        }
+
+        #desc-modal > div {
+            background: #333;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 5px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        #modal-desc {
+            white-space: pre-wrap;
+            font-family: inherit;
+            line-height: 1.5;
+            margin: 15px 0;
+        }
+
+        .pricing-table td:nth-child(2) { /* Description column */
+            max-width: 200px;
+            word-break: break-word;
+        }
+        .desc-link {
+            cursor: pointer;
+            color: #3498db;
+            text-decoration: underline;
+        }
+
+        .desc-link:hover {
+            color: #2980b9;
+        }
     </style>
 </head>
 <body>
@@ -342,9 +391,6 @@
                         <tr>
                             <th>vCPUs</th>
                             <th>Memory</th>
-                            <th>Disk</th>
-                            <th>Data Transfer</th>
-                            <th>Bandwidth</th>
                             <th>Price</th>
                             <th>Quantity</th>
                             <th>Action</th>
@@ -352,6 +398,24 @@
                     </thead>
                     <tbody>
                         <!-- ECS rows will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- EVS ULTRA DISK SPACE TABLE -->
+            <div class="pricing-section">
+                <h2>EVS Ultra Disk Space</h2>
+                <table class="pricing-table" id="evs-table">
+                    <thead>
+                        <tr>
+                            <th>Capacity</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- EVS rows will be populated by JavaScript -->
                     </tbody>
                 </table>
             </div>
@@ -364,8 +428,6 @@
                         <tr>
                             <th>Type</th>
                             <th>Capacity</th>
-                            <th>IOPS</th>
-                            <th>Throughput</th>
                             <th>Price</th>
                             <th>Quantity</th>
                             <th>Action</th>
@@ -384,9 +446,7 @@
                     <thead>
                         <tr>
                             <th>Service Level</th>
-                            <th>Coverage</th>
-                            <th>Response Time</th>
-                            <th>Support Channels</th>
+                            <th>Description</th>
                             <th>Price</th>
                             <th>Quantity</th>
                             <th>Action</th>
@@ -396,6 +456,15 @@
                         <!-- Managed services rows will be populated by JavaScript -->
                     </tbody>
                 </table>
+                <div id="desc-modal" style="display:none;">
+                    <div>
+                        <h2 id="modal-title"></h2>
+                        <pre id="modal-desc" style="white-space:pre-wrap;font-family:inherit;"></pre>
+                        <button style="margin-top:20px;padding:10px 20px;background:#3498db;color:white;border:none;border-radius:4px;">
+                            Close
+                        </button>
+                    </div>
+                </div>
             </div>
             
             <!-- MYSQL RDS DATABASE SERVICE TABLE -->
@@ -598,19 +667,9 @@
                                     <input type="number" id="ecs-memory" step="0.1" min="0.5" value="0.5">
                                 </div>
                             </div>
-                            <div class="two-columns">
-                                <div class="form-group">
-                                    <label for="ecs-disk">Disk (GB)</label>
-                                    <input type="number" id="ecs-disk" min="1" value="40">
-                                </div>
-                                <div class="form-group">
-                                    <label for="ecs-transfer">Data Transfer (TB)</label>
-                                    <input type="number" id="ecs-transfer" min="0" value="1">
-                                </div>
-                            </div>
                             <div class="form-group">
-                                <label for="ecs-bandwidth">Bandwidth (Mbps)</label>
-                                <input type="number" id="ecs-bandwidth" min="1" value="30">
+                                <label for="ecs-disk">Disk (GB)</label>
+                                <input type="number" id="ecs-disk" min="1" value="40">
                             </div>
                         </div>
                         
@@ -626,35 +685,15 @@
                                 <label for="storage-capacity">Capacity (GB)</label>
                                 <input type="number" id="storage-capacity" min="1" value="100">
                             </div>
-                            <div class="form-group">
-                                <label for="storage-iops">IOPS</label>
-                                <input type="number" id="storage-iops" min="0" value="5000">
-                            </div>
-                            <div class="form-group">
-                                <label for="storage-throughput">Throughput (MB/s)</label>
-                                <input type="number" id="storage-throughput" min="1" value="150">
-                            </div>
                         </div>
                         
                         <div id="managed-specs" style="display: none;">
                             <div class="form-group">
                                 <label for="managed-level">Service Level</label>
                                 <select id="managed-level">
-                                    <option value="basic">Basic</option>
-                                    <option value="premium">Premium</option>
+                                    <option value="Basic Managed Service">Basic Managed Service</option>
+                                    <option value="Premium Managed Service">Premium Managed Service</option>
                                 </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="managed-coverage">Coverage</label>
-                                <input type="text" id="managed-coverage" value="Business Hours">
-                            </div>
-                            <div class="form-group">
-                                <label for="managed-response">Response Time</label>
-                                <input type="text" id="managed-response" value="4 Hours">
-                            </div>
-                            <div class="form-group">
-                                <label for="managed-channels">Support Channels</label>
-                                <input type="text" id="managed-channels" value="Email/Ticket">
                             </div>
                         </div>
 
@@ -711,77 +750,140 @@
     <script>
         // ========== GLOBAL VARIABLES ==========
         let products = [
-            // Elastic Cloud Servers
+            // Elastic Cloud Servers - Updated to match the image specifications (no disk)
             { 
                 id: 'ecs-1', 
-                name: "ECS: 2 vCPU / 0.5GB RAM / 40GB ESSD", 
+                name: "IaaS ECS 2C4M", 
                 category: "ecs", 
-                price: 3.5, 
-                description: "Basic cloud server with 2 vCPUs, 0.5GB memory and 40GB ESSD storage",
+                price: 19.99, 
+                description: "Basic cloud server with 2 vCPUs and 4GB RAM",
                 specs: {
                     vcpus: 2,
-                    memory: 0.5,
-                    disk: 40,
-                    transfer: 1,
-                    bandwidth: 30
+                    memory: 4
                 }
             },
             { 
                 id: 'ecs-2', 
-                name: "ECS: 2 vCPU / 1GB RAM / 50GB ESSD", 
+                name: "IaaS ECS 2C8M", 
                 category: "ecs", 
-                price: 4.5, 
-                description: "Cloud server with 2 vCPUs, 1GB memory and 50GB ESSD storage",
+                price: 29.99, 
+                description: "Cloud server with 2 vCPUs and 8GB RAM",
                 specs: {
                     vcpus: 2,
-                    memory: 1,
-                    disk: 50,
-                    transfer: 2,
-                    bandwidth: 30
+                    memory: 8
                 }
             },
             { 
                 id: 'ecs-3', 
-                name: "ECS: 2 vCPU / 2GB RAM / 60GB ESSD", 
+                name: "IaaS ECS 4C8M", 
                 category: "ecs", 
-                price: 9, 
-                description: "Cloud server with 2 vCPUs, 2GB memory and 60GB ESSD storage",
+                price: 39.99, 
+                description: "Cloud server with 4 vCPUs and 8GB RAM",
                 specs: {
-                    vcpus: 2,
-                    memory: 2,
-                    disk: 60,
-                    transfer: 3,
-                    bandwidth: 30
+                    vcpus: 4,
+                    memory: 8
                 }
             },
             { 
                 id: 'ecs-4', 
-                name: "ECS: 2 vCPU / 4GB RAM / 100GB ESSD", 
+                name: "IaaS ECS 4C16M", 
                 category: "ecs", 
-                price: 19, 
-                description: "Cloud server with 2 vCPUs, 4GB memory and 100GB ESSD storage",
+                price: 59.99, 
+                description: "Cloud server with 4 vCPUs and 16GB RAM",
                 specs: {
-                    vcpus: 2,
-                    memory: 4,
-                    disk: 100,
-                    transfer: 4,
-                    bandwidth: 30
+                    vcpus: 4,
+                    memory: 16
                 }
             },
             { 
                 id: 'ecs-5', 
-                name: "ECS: 4 vCPU / 16GB RAM / 400GB ESSD", 
+                name: "IaaS ECS 8C16M", 
                 category: "ecs", 
-                price: 70, 
-                description: "High performance cloud server with 4 vCPUs, 16GB memory and 400GB ESSD storage",
+                price: 79.99, 
+                description: "High performance cloud server with 8 vCPUs and 16GB RAM",
                 specs: {
-                    vcpus: 4,
-                    memory: 16,
-                    disk: 400,
-                    transfer: 6,
-                    bandwidth: 30
+                    vcpus: 8,
+                    memory: 16
                 }
             },
+            { 
+                id: 'ecs-6', 
+                name: "IaaS ECS 8C32M", 
+                category: "ecs", 
+                price: 119.99, 
+                description: "High performance cloud server with 8 vCPUs and 32GB RAM",
+                specs: {
+                    vcpus: 8,
+                    memory: 32
+                }
+            },
+            { 
+                id: 'ecs-7', 
+                name: "IaaS ECS 16C32M", 
+                category: "ecs", 
+                price: 159.99, 
+                description: "Enterprise cloud server with 16 vCPUs and 32GB RAM",
+                specs: {
+                    vcpus: 16,
+                    memory: 32
+                }
+            },
+            { 
+                id: 'ecs-8', 
+                name: "IaaS ECS 16C64M", 
+                category: "ecs", 
+                price: 229.99, 
+                description: "Enterprise cloud server with 16 vCPUs and 64GB RAM",
+                specs: {
+                    vcpus: 16,
+                    memory: 64
+                }
+            },
+            
+            // EVS Ultra Disk Space Products
+            { 
+                id: 'evs-1', 
+                name: "EVS Ultra Disk 50GB", 
+                category: "evs", 
+                price: 5.00, 
+                description: "50GB Ultra Disk Storage",
+                specs: {
+                    capacity: 50
+                }
+            },
+            { 
+                id: 'evs-2', 
+                name: "EVS Ultra Disk 100GB", 
+                category: "evs", 
+                price: 8.00, 
+                description: "100GB Ultra Disk Storage",
+                specs: {
+                    capacity: 100
+                }
+            },
+            { 
+                id: 'evs-3', 
+                name: "EVS Ultra Disk 500GB", 
+                category: "evs", 
+                price: 30.00, 
+                description: "500GB Ultra Disk Storage",
+                specs: {
+                    capacity: 500
+                }
+            },
+            { 
+                id: 'evs-4', 
+                name: "EVS Ultra Disk 1000GB", 
+                category: "evs", 
+                price: 50.00, 
+                description: "1000GB (1TB) Ultra Disk Storage",
+                specs: {
+                    capacity: 1000
+                }
+            },
+
+
+
             
             // Storage
             { 
@@ -789,12 +891,10 @@
                 name: "Block Storage (Standard) 100GB", 
                 category: "storage", 
                 price: 2.79, 
-                description: "100GB Block Storage (Standard Disk) with 5,000 IOPS",
+                description: "100GB Block Storage (Standard Disk)",
                 specs: {
                     type: "block",
-                    capacity: 100,
-                    iops: 5000,
-                    throughput: 150
+                    capacity: 100
                 }
             },
             { 
@@ -802,41 +902,72 @@
                 name: "Object Storage 100GB", 
                 category: "storage", 
                 price: 0.80, 
-                description: "100GB Object Storage with 100MB/s throughput",
+                description: "100GB Object Storage",
                 specs: {
                     type: "object",
-                    capacity: 100,
-                    iops: null,
-                    throughput: 100
+                    capacity: 100
                 }
             },
             
             // Managed Services
-            { 
-                id: 'managed-1', 
-                name: "Basic Managed Service", 
-                category: "managed", 
-                price: 13.28, 
-                description: "Basic managed services for 1 unit of virtual or physical server",
-                specs: {
-                    level: "basic",
-                    coverage: "Business Hours",
-                    response: "4 Hours",
-                    channels: "Email/Ticket"
-                }
+            {
+              id: 'managed-1',
+              name: "Basic Managed Service",
+              category: "managed",
+              price: 13.28,
+              shortDesc: "Basic support for 1 server (remote/physical)", 
+              fullDesc: `Basic Managed Service for 1 unit of virtual/physical server with remote arm assistance.
+
+              Physical server ONLY:
+              1. Rebooting or power cycling of physical server.
+              2. With granted access, to provide visual verification (screen capture) to assist customer's 
+              remote troubleshooting efforts.
+              3. Swapping of pre-labeled, pre-ejected, removable media (tapes, CDs, DVDs, etc.).
+              4. Replacing or verifying network connectivity.
+              5. Data Centre physical access upon write in and approved by SAINS.
+              6. Server availability check, to monitor the keep-alive network connectivity.
+              7. Basic server monitoring: server availabilty.
+              8. Physical check and relaying status of equipment indicators. (LED indicators).
+              9. Exclude parts replacement.
+              10. Call Centre escalation.
+
+              Virtual server/Cloud ONLY:
+              1. With granted access, to provide visual verification (screen capture) 
+              to assist customer's remote troubleshooting efforts.
+              2. Basic server monitoring: server availabilty.
+              3. Call Centre escalation.`
             },
-            { 
-                id: 'managed-2', 
-                name: "Premium Managed Service", 
-                category: "managed", 
-                price: 56.25, 
-                description: "Premium managed services for 1 unit of virtual or physical server",
-                specs: {
-                    level: "premium",
-                    coverage: "24/7",
-                    response: "1 Hour",
-                    channels: "Phone/Email/Chat"
-                }
+            {
+              id: 'managed-2',
+              name: "Premium Managed Service", 
+              category: "managed", 
+              price: 56.25,
+              shortDesc: "Advanced support for 1 server (OS/HW)", 
+              fullDesc: `Premium Managed Service for 1 unit of virtual/physical server server support and maintenance inclusive of:
+
+              1. Work together with customer to resolve their server related problem.
+              2. To support server operating system and hardware related problem.
+              3. With granted access to support operating system, to fine tune, troubleshooting,
+              diagnostic and investigation of server operating system,
+              includes re-installation of operating system when required.
+              4. Hardware level - to diagnose and identify the HW problems, exclude parts replacement.
+              (applicable for physical server only)
+              5. Administration tasks includes operating system account maintenance (create/delete/modify).
+              File sharing management, moving of file/directory and permission modification.
+              Services maintenance, start/stop/restart the services, with written authorized approval 
+              from customer and operation manual provided,
+              to support the operating system related services.
+              6. Patch maintenance includes: Critical or security or firmware patching for Operating System or 
+              Server Hardware level only if it is a physical server. Work together with customer whenever 
+              required with written authorized approval from customer. 
+              Work together with customer to recover if problems encountered after the patch installation.
+              7. Advance monitoring includes: monitoring the server resources 
+              utilization for storage, processor and memory (HDD/CPU/RAM).
+              8. Call Centre escalation.
+
+              NOTE: Exclusion
+              1. Application support and the application platform software such as apache, PHP, 
+              tomcat, IIS and database services.`
             },
 
             // MySQL RDS Products
@@ -844,52 +975,52 @@
               id: 'mysql-1', 
               name: "Basic MySQL HA Edition RDS", 
               category: "mysql", 
-              price: 12885.00, 
+              price: 12000.00, 
               description: "Basic MySQL HA Edition RDS with 2vCPU, 8GB RAM, 500GB SSD Storage",
               specs: {
               vcpus: 2,
               ram: 8,  
               storage: 500,
-              edition: "Basic"
+              edition: "HA Basic"
             }
           },
           { 
             id: 'mysql-2', 
             name: "Standard MySQL HA Edition RDS", 
             category: "mysql", 
-            price: 18045.00, 
+            price: 18000.00, 
             description: "Standard MySQL HA Edition RDS with 4 vCPU, 16GB RAM, 500GB SSD Storage",
             specs: {
               vcpus: 4,
               ram: 16,
               storage: 500,
-              edition: "Standard"
+              edition: "HA Standard"
           }
         },
           { 
           id: 'mysql-3', 
           name: "Premium MySQL HA Edition RDS", 
           category: "mysql", 
-          price: 28459.00, 
+          price: 28000.00, 
           description: "Premium MySQL HA Edition RDS with 8 vCPU, 32GB RAM, 500GB SSD Storage",
           specs: {
             vcpus: 8,
             ram: 32,
             storage: 500,
-            edition: "Premium"
+            edition: "HA Premium"
         }
       },
         { 
           id: 'mysql-4', 
           name: "Advance MySQL HA Edition RDS", 
           category: "mysql", 
-          price: 58612.00, 
+          price: 58000.00, 
           description: "Advance MySQL HA Edition RDS with 16 vCPU, 64GB RAM, 500GB SSD Storage",
           specs: {
             vcpus: 16,
             ram: 64,
             storage: 500,
-            edition: "Advance"
+            edition: "HA Advance"
         }
       }
     ];
@@ -919,30 +1050,30 @@
 
         // ========== HELPER FUNCTIONS ==========
         function loadProductsFromStorage() {
-        // Try to load from localStorage first
-        const storedProducts = localStorage.getItem('products');
-    
-        if (storedProducts) {
-            try {
-                const parsedProducts = JSON.parse(storedProducts);
-                // Only use stored products if they're valid and not empty
-                if (Array.isArray(parsedProducts) && parsedProducts.length > 0) {
-                    products = parsedProducts;
-                } else {
-                    // If stored products are invalid, use defaults and save them
+            // Try to load from localStorage first
+            const storedProducts = localStorage.getItem('products');
+        
+            if (storedProducts) {
+                try {
+                    const parsedProducts = JSON.parse(storedProducts);
+                    // Only use stored products if they're valid and not empty
+                    if (Array.isArray(parsedProducts) && parsedProducts.length > 0) {
+                        products = parsedProducts;
+                    } else {
+                        // If stored products are invalid, use defaults and save them
+                        localStorage.setItem('products', JSON.stringify(products));
+                    }
+                } catch (e) {
+                    // If parsing fails, use defaults and save them
                     localStorage.setItem('products', JSON.stringify(products));
                 }
-            } catch (e) {
-                // If parsing fails, use defaults and save them
+            } else {
+                // If no stored products, use defaults and save them
                 localStorage.setItem('products', JSON.stringify(products));
             }
-        } else {
-            // If no stored products, use defaults and save them
-            localStorage.setItem('products', JSON.stringify(products));
-        }
-    
-        // Always render the products (whether they came from localStorage or defaults)
-        renderPricingTables();
+        
+            // Always render the products (whether they came from localStorage or defaults)
+            renderPricingTables();
         }
 
         function populateStatesDropdown() {
@@ -963,6 +1094,7 @@
         // ========== RENDER PRICING TABLES ==========
         function renderPricingTables() {
             renderECSTable();
+            renderEVSTable();
             renderStorageTable();
             renderManagedServicesTable();
             renderMySQLTable();
@@ -978,9 +1110,6 @@
                 tr.innerHTML = `
                     <td>${product.specs.vcpus}</td>
                     <td>${product.specs.memory}GB</td>
-                    <td>${product.specs.disk}GB ESSD</td>
-                    <td>${product.specs.transfer}TB</td>
-                    <td>${product.specs.bandwidth}Mbps</td>
                     <td>RM${product.price.toFixed(2)}/month</td>
                     <td>
                         <div class="quantity-control">
@@ -998,6 +1127,32 @@
             });
         }
 
+        function renderEVSTable() {
+            const evsProducts = products.filter(p => p.category === 'evs');
+            const tbody = document.querySelector('#evs-table tbody');
+            tbody.innerHTML = '';
+    
+            evsProducts.forEach((product) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${product.specs.capacity}GB</td>
+                    <td>RM${product.price.toFixed(2)}/month</td>
+                    <td>
+                        <div class="quantity-control">
+                            <input type="number" min="1" value="1" id="qty-${product.id}">
+                        </div>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" 
+                            onclick="addProductToCart('${product.id}')">
+                                Add to Cart
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
         function renderStorageTable() {
             const storageProducts = products.filter(p => p.category === 'storage');
             const tbody = document.querySelector('#storage-table tbody');
@@ -1009,8 +1164,6 @@
                 tr.innerHTML = `
                     <td>${typeName}</td>
                     <td>${product.specs.capacity}GB</td>
-                    <td>${product.specs.iops || 'N/A'}</td>
-                    <td>${product.specs.throughput}MB/s</td>
                     <td>RM${product.price.toFixed(2)}/month</td>
                     <td>
                         <div class="quantity-control">
@@ -1029,43 +1182,42 @@
         }
 
         function renderManagedServicesTable() {
-            const managedProducts = products.filter(p => p.category === 'managed');
             const tbody = document.querySelector('#managed-table tbody');
             tbody.innerHTML = '';
     
-            managedProducts.forEach((product) => {
+            products.filter(p => p.category === 'managed').forEach(product => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td>${product.specs.level.charAt(0).toUpperCase() + product.specs.level.slice(1)}</td>
-                    <td>${product.specs.coverage}</td>
-                    <td>${product.specs.response}</td>
-                    <td>${product.specs.channels}</td>
-                    <td>RM${product.price.toFixed(2)}/month</td>
+                <td>${product.name}</td>
                     <td>
-                        <div class="quantity-control">
-                            <input type="number" min="1" value="1" id="qty-${product.id}">
-                        </div>
+                        <span class="desc-link" data-title="${escapeHtml(product.name)}" data-desc="${escapeHtml(product.fullDesc)}">
+                            ${product.shortDesc}
+                        </span>
                     </td>
-                    <td>
-                        <button class="btn btn-primary btn-sm" 
-                            onclick="addProductToCart('${product.id}')">
-                            Add to Cart
-                        </button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
+                <td>RM${product.price.toFixed(2)}/month</td>
+                <td><input type="number" min="1" value="1" id="qty-${product.id}" style="width:60px"></td>
+                <td><button class="btn btn-primary btn-sm" onclick="addProductToCart('${product.id}')">Add</button></td>
+            `;
+            tbody.appendChild(tr);
             });
-        }
+
+    // Add event listeners to all description links
+    document.querySelectorAll('.desc-link').forEach(link => {
+        link.addEventListener('click', function() {
+            showFullDesc(this.dataset.title, this.dataset.desc);
+        });
+    });
+}
 
         function renderMySQLTable() {
             const mysqlProducts = products.filter(p => p.category === 'mysql');
             const tbody = document.querySelector('#mysql-table tbody');
             tbody.innerHTML = '';
-    
+
             mysqlProducts.forEach((product) => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td>${product.specs.edition}</td>
+                    <td>${product.specs.edition}</td>  <!-- Show the actual edition from specs -->
                     <td>${product.specs.vcpus}</td>
                     <td>${product.specs.ram}GB</td>
                     <td>${product.specs.storage}GB SSD</td>
@@ -1255,6 +1407,7 @@
             const category = document.getElementById('admin-product-category').value;
             const specsSection = document.getElementById('specs-section');
             const ecsSpecs = document.getElementById('ecs-specs');
+            const evsSpecs = document.getElementById('evs-specs'); // NEW
             const storageSpecs = document.getElementById('storage-specs');
             const managedSpecs = document.getElementById('managed-specs');
             const mysqlSpecs = document.getElementById('mysql-specs');
@@ -1262,6 +1415,7 @@
             // Hide all specs sections first
             specsSection.style.display = 'none';
             ecsSpecs.style.display = 'none';
+            evsSpecs.style.display = 'none'; // NEW
             storageSpecs.style.display = 'none';
             managedSpecs.style.display = 'none';
             mysqlSpecs.style.display = 'none';
@@ -1269,6 +1423,9 @@
             if (category === 'ecs') {
                 specsSection.style.display = 'block';
                 ecsSpecs.style.display = 'block';
+            } else if (category === 'evs') { // NEW
+                specsSection.style.display = 'block';
+                evsSpecs.style.display = 'block';
             } else if (category === 'storage') {
                 specsSection.style.display = 'block';
                 storageSpecs.style.display = 'block';
@@ -1330,18 +1487,11 @@
                 document.getElementById('ecs-vcpus').value = product.specs.vcpus;
                 document.getElementById('ecs-memory').value = product.specs.memory;
                 document.getElementById('ecs-disk').value = product.specs.disk;
-                document.getElementById('ecs-transfer').value = product.specs.transfer;
-                document.getElementById('ecs-bandwidth').value = product.specs.bandwidth;
             } else if (product.category === 'storage') {
                 document.getElementById('storage-type').value = product.specs.type;
                 document.getElementById('storage-capacity').value = product.specs.capacity;
-                document.getElementById('storage-iops').value = product.specs.iops || '';
-                document.getElementById('storage-throughput').value = product.specs.throughput;
             } else if (product.category === 'managed') {
                 document.getElementById('managed-level').value = product.specs.level;
-                document.getElementById('managed-coverage').value = product.specs.coverage;
-                document.getElementById('managed-response').value = product.specs.response;
-                document.getElementById('managed-channels').value = product.specs.channels;
             } else if (product.category === 'mysql') {
                 document.getElementById('mysql-vcpus').value = product.specs.vcpus;
                 document.getElementById('mysql-ram').value = product.specs.ram;
@@ -1374,23 +1524,16 @@
                 specs = {
                     vcpus: parseInt(document.getElementById('ecs-vcpus').value),
                     memory: parseFloat(document.getElementById('ecs-memory').value),
-                    disk: parseInt(document.getElementById('ecs-disk').value),
-                    transfer: parseInt(document.getElementById('ecs-transfer').value),
-                    bandwidth: parseInt(document.getElementById('ecs-bandwidth').value)
+                    disk: parseInt(document.getElementById('ecs-disk').value)
                 };
             } else if (category === 'storage') {
                 specs = {
                     type: document.getElementById('storage-type').value,
-                    capacity: parseInt(document.getElementById('storage-capacity').value),
-                    iops: parseInt(document.getElementById('storage-iops').value) || null,
-                    throughput: parseInt(document.getElementById('storage-throughput').value)
+                    capacity: parseInt(document.getElementById('storage-capacity').value)
                 };
             } else if (category === 'managed') {
                 specs = {
-                    level: document.getElementById('managed-level').value,
-                    coverage: document.getElementById('managed-coverage').value,
-                    response: document.getElementById('managed-response').value,
-                    channels: document.getElementById('managed-channels').value
+                    level: document.getElementById('managed-level').value
                 };
             } else if (category === 'mysql') {
                 specs = {
@@ -1433,6 +1576,35 @@
             document.getElementById('product-form').style.display = 'none';
         }
 
+        // ========== MODAL FUNCTIONS ==========
+        function showFullDesc(title, desc) {
+            const modal = document.getElementById('desc-modal');
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-desc').textContent = desc;
+            modal.style.display = 'block';
+    
+            // Close modal when clicking the close button
+            modal.querySelector('button').onclick = function() {
+            modal.style.display = 'none';
+            };
+    
+            // Close modal when clicking outside content
+            modal.onclick = function(e) {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                }
+            };
+        }
+
+        function escapeHtml(unsafe) {
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
         // ========== INITIALIZE ==========
         document.addEventListener('DOMContentLoaded', function() {
             // 1. First ensure products are loaded (with fallback to defaults)
@@ -1449,58 +1621,58 @@
     
             // Demo: Enable admin access by default (remove in production)
             toggleAdminAccess(true);
-            });
+        });
 
-            // Helper function to properly initialize cart
-            function initializeCart() {
-                try {
-                    const storedCart = localStorage.getItem('cart');
-                    cart = storedCart ? JSON.parse(storedCart) : [];
-        
-                    // Validate cart items against existing products
-                    cart = cart.filter(item => products.some(p => p.id === item.id.split('-')[0]));
-                    saveCart(); // Save filtered cart back to storage
-                } catch (e) {
-                    console.error('Error loading cart:', e);
+        // Helper function to properly initialize cart
+        function initializeCart() {
+            try {
+                const storedCart = localStorage.getItem('cart');
+                cart = storedCart ? JSON.parse(storedCart) : [];
+    
+                // Validate cart items against existing products
+                cart = cart.filter(item => products.some(p => p.id === item.id.split('-')[0]));
+                saveCart(); // Save filtered cart back to storage
+            } catch (e) {
+                console.error('Error loading cart:', e);
+                cart = [];
+            }
+        }
+
+        // Helper function to initialize UI components
+        function initializeUI() {
+            loadCart();
+            renderPricingTables();
+            populateStatesDropdown();
+    
+            // Show order tab by default
+            showTab('order-tab'); 
+        }
+
+        // Helper function for all event listeners
+        function setupEventListeners() {
+            // Order page
+            document.getElementById('clear-cart').addEventListener('click', clearCart);
+    
+            // Checkout page
+            document.getElementById('place-order').addEventListener('click', function() {
+                if (validateForm()) {
+                    alert('Thank you for your order!');
                     cart = [];
+                    saveCart();
+                    showTab('order-tab');
                 }
-            }
-
-            // Helper function to initialize UI components
-            function initializeUI() {
-                loadCart();
-                renderPricingTables();
-                populateStatesDropdown();
+            });
     
-                // Show order tab by default
-                showTab('order-tab'); 
-            }
+            // Admin page
+            document.getElementById('add-product-btn').addEventListener('click', showAddForm);
+            document.getElementById('save-product').addEventListener('click', saveProduct);
+            document.getElementById('cancel-edit').addEventListener('click', hideForm);
+        }
 
-            // Helper function for all event listeners
-            function setupEventListeners() {
-                // Order page
-                document.getElementById('clear-cart').addEventListener('click', clearCart);
-    
-                // Checkout page
-                document.getElementById('place-order').addEventListener('click', function() {
-                    if (validateForm()) {
-                        alert('Thank you for your order!');
-                        cart = [];
-                        saveCart();
-                        showTab('order-tab');
-                    }
-                });
-    
-                // Admin page
-                document.getElementById('add-product-btn').addEventListener('click', showAddForm);
-                document.getElementById('save-product').addEventListener('click', saveProduct);
-                document.getElementById('cancel-edit').addEventListener('click', hideForm);
-            }
-
-            function toggleAdminAccess(show) {
-                document.getElementById('admin-link').style.display = show ? 'block' : 'none';
-                document.getElementById('admin-tab-btn').style.display = show ? 'block' : 'none';
-            }
+        function toggleAdminAccess(show) {
+            document.getElementById('admin-link').style.display = show ? 'block' : 'none';
+            document.getElementById('admin-tab-btn').style.display = show ? 'block' : 'none';
+        }
     </script>
 </body>
 </html>
