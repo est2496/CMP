@@ -1,2 +1,2 @@
 # CMP
-CMP Service Catalog
+CMP Service Packages version originally from Bernard, edited by Estella.
