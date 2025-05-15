@@ -1,7 +1,7 @@
 <!-- 
   Original Author: Calvin
   Edited by: Estella
-  Modified Date: 2025-05-14
+  Modified Date: 2025-05-15
   Description: This is the main HTML page version 1 for the website of CMP service catalog
 -->
 
@@ -47,6 +47,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 1rem;
         }
         .logo {
             font-size: 1.5rem;
@@ -56,6 +57,7 @@
             display: flex;
             background: var(--light);
             border-bottom: 1px solid #ddd;
+            margin-bottom: 1.5rem;
         }
         .tab-btn {
             padding: 1rem 1.5rem;
@@ -85,6 +87,7 @@
             background: white;
             padding: 2rem;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-radius: 8px;
         }
         .tab-content.active {
             display: block;
@@ -133,16 +136,33 @@
             border-radius: 4px;
             font-size: 1rem;
         }
-        .flex-container {
+
+        /* NEW LAYOUT STYLES */
+        .page-container {
             display: flex;
             gap: 2rem;
+            align-items: flex-start;
         }
-        .main-content {
+        .main-content-container {
             flex: 3;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
         }
         .cart-sidebar {
             flex: 1;
+            position: sticky;
+            top: 20px;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            height: fit-content;
+            max-height: 90vh;
+            overflow-y: auto;
         }
+
+        /* Cart item styles */
         .cart-item {
             display: flex;
             justify-content: space-between;
@@ -178,7 +198,7 @@
             justify-content: space-between;
             margin-bottom: 0.5rem;
         }
-        .cart-total, .order-total {
+        .cart-total {
             font-weight: bold;
             font-size: 1.2rem;
             margin: 1rem 0;
@@ -189,51 +209,15 @@
             text-align: center;
             margin-top: 2rem;
         }
-        .products-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1rem;
-        }
-        .products-table th, .products-table td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
-        .products-table th {
-            background-color: var(--light);
-        }
-        .action-btn {
-            padding: 0.5rem 1rem;
-            margin-right: 0.5rem;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        #admin-actions {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 1.5rem;
-            align-items: center;
-        }
-        #product-form {
-            display: none;
-            margin-bottom: 2rem;
-        }
-        .two-columns {
-            display: flex;
-            gap: 1rem;
-        }
-        .two-columns .form-group {
-            flex: 1;
-        }
         .cart-actions {
             display: flex;
             gap: 1rem;
             margin-top: 1rem;
         }
-        /* NEW STYLES FOR PRICING TABLES */
+
+        /* Pricing table styles */
         .pricing-section {
-            margin: 2rem 0;
+            margin-bottom: 2rem;
         }
         .pricing-section h2 {
             margin-bottom: 1rem;
@@ -278,35 +262,7 @@
             background-color: var(--light);
             border-radius: 4px;
         }
-        /* Admin form specs section */
-        .specs-section {
-            margin-top: 1rem;
-            padding: 1rem;
-            background-color: #f5f5f5;
-            border-radius: 4px;
-        }
-        .specs-section h3 {
-            margin-bottom: 0.5rem;
-        }
 
-        .two-columns {
-            flex-wrap: wrap;
-        }
-
-        .two-columns > .form-group {
-            flex: 1;
-        }
-
-        #shipping-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        
-        .mysql-specs {
-            display: none;
-        }
-        
         /* Modal styles */
         #desc-modal {
             position: fixed;
@@ -321,7 +277,6 @@
             color: white;
             overflow: auto;
         }
-
         #desc-modal > div {
             background: #333;
             max-width: 800px;
@@ -331,26 +286,103 @@
             max-height: 80vh;
             overflow-y: auto;
         }
-
         #modal-desc {
             white-space: pre-wrap;
             font-family: inherit;
             line-height: 1.5;
             margin: 15px 0;
         }
-
-        .pricing-table td:nth-child(2) { /* Description column */
-            max-width: 200px;
-            word-break: break-word;
-        }
         .desc-link {
             cursor: pointer;
             color: #3498db;
             text-decoration: underline;
         }
-
         .desc-link:hover {
             color: #2980b9;
+        }
+
+        /* Admin styles */
+        #admin-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            align-items: center;
+        }
+        #product-form {
+            display: none;
+            margin-bottom: 2rem;
+        }
+        .two-columns {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .two-columns > .form-group {
+            flex: 1;
+        }
+        .specs-section {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+        }
+        .specs-section h3 {
+            margin-bottom: 0.5rem;
+        }
+        .mysql-specs {
+            display: none;
+        }
+        .products-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        .products-table th, .products-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        .products-table th {
+            background-color: var(--light);
+        }
+        .action-btn {
+            padding: 0.5rem 1rem;
+            margin-right: 0.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .checkout-container {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+        
+        .checkout-main-content {
+            flex: 3;
+        }
+        
+        .checkout-cart-sidebar {
+            flex: 1;
+            position: sticky;
+            top: 20px;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            height: fit-content;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .page-container {
+                flex-direction: column;
+            }
+            .cart-sidebar {
+                position: static;
+                width: 100%;
+                margin-top: 2rem;
+            }
         }
     </style>
 </head>
@@ -383,116 +415,115 @@
                 </select>
             </div>
 
-            <!-- ELASTIC CLOUD SERVERS TABLE -->
-            <div class="pricing-section">
-                <h2>Elastic Cloud Servers</h2>
-                <table class="pricing-table" id="ecs-table">
-                    <thead>
-                        <tr>
-                            <th>vCPUs</th>
-                            <th>Memory</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- ECS rows will be populated by JavaScript -->
-                    </tbody>
-                </table>
-            </div>
+            <div class="page-container">
+                <div class="main-content-container">
+                    <!-- ELASTIC CLOUD SERVERS TABLE -->
+                    <div class="pricing-section">
+                        <h2>Elastic Cloud Servers</h2>
+                        <table class="pricing-table" id="ecs-table">
+                            <thead>
+                                <tr>
+                                    <th>vCPUs</th>
+                                    <th>Memory</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- ECS rows will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
 
-            <!-- EVS ULTRA DISK SPACE TABLE -->
-            <div class="pricing-section">
-                <h2>EVS Ultra Disk Space</h2>
-                <table class="pricing-table" id="evs-table">
-                    <thead>
-                        <tr>
-                            <th>Capacity</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- EVS rows will be populated by JavaScript -->
-                    </tbody>
-                </table>
-            </div>
+                    <!-- EVS ULTRA DISK SPACE TABLE -->
+                    <div class="pricing-section">
+                        <h2>EVS Ultra Disk Space</h2>
+                        <table class="pricing-table" id="evs-table">
+                            <thead>
+                                <tr>
+                                    <th>Capacity</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- EVS rows will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
 
-            <!-- STORAGE TABLE -->
-            <div class="pricing-section">
-                <h2>Storage</h2>
-                <table class="pricing-table" id="storage-table">
-                    <thead>
-                        <tr>
-                            <th>Type</th>
-                            <th>Capacity</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Storage rows will be populated by JavaScript -->
-                    </tbody>
-                </table>
-            </div>
+                    <!-- STORAGE TABLE -->
+                    <div class="pricing-section">
+                        <h2>Storage</h2>
+                        <table class="pricing-table" id="storage-table">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Capacity</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Storage rows will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
 
-            <!-- MANAGED SERVICES TABLE -->
-            <div class="pricing-section">
-                <h2>Managed Services</h2>
-                <table class="pricing-table" id="managed-table">
-                    <thead>
-                        <tr>
-                            <th>Service Level</th>
-                            <th>Description</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Managed services rows will be populated by JavaScript -->
-                    </tbody>
-                </table>
-                <div id="desc-modal" style="display:none;">
-                    <div>
-                        <h2 id="modal-title"></h2>
-                        <pre id="modal-desc" style="white-space:pre-wrap;font-family:inherit;"></pre>
-                        <button style="margin-top:20px;padding:10px 20px;background:#3498db;color:white;border:none;border-radius:4px;">
-                            Close
-                        </button>
+                    <!-- MANAGED SERVICES TABLE -->
+                    <div class="pricing-section">
+                        <h2>Managed Services</h2>
+                        <table class="pricing-table" id="managed-table">
+                            <thead>
+                                <tr>
+                                    <th>Service Level</th>
+                                    <th>Description</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Managed services rows will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                        <div id="desc-modal" style="display:none;">
+                            <div>
+                                <h2 id="modal-title"></h2>
+                                <pre id="modal-desc" style="white-space:pre-wrap;font-family:inherit;"></pre>
+                                <button style="margin-top:20px;padding:10px 20px;background:#3498db;color:white;border:none;border-radius:4px;">
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- MYSQL RDS DATABASE SERVICE TABLE -->
+                    <div class="pricing-section">
+                        <h2>MySQL RDS Database Service</h2>
+                        <table class="pricing-table" id="mysql-table">
+                            <thead>
+                                <tr>
+                                    <th>Edition</th>
+                                    <th>vCPUs</th>
+                                    <th>RAM</th>
+                                    <th>Storage</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- MySQL rows will be populated by JavaScript -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            </div>
-            
-            <!-- MYSQL RDS DATABASE SERVICE TABLE -->
-            <div class="pricing-section">
-                <h2>MySQL RDS Database Service</h2>
-                <table class="pricing-table" id="mysql-table">
-                    <thead>
-                        <tr>
-                            <th>Edition</th>
-                            <th>vCPUs</th>
-                            <th>RAM</th>
-                            <th>Storage</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- MySQL rows will be populated by JavaScript -->
-                    </tbody>
-                </table>
-            </div>
-            
-            <div class="flex-container">
-                <main class="main-content">
-                    <!-- Content area remains empty since we're using tables -->
-                </main>
                 
+                <!-- CART SIDEBAR -->
                 <aside class="cart-sidebar">
                     <h2>Shopping Cart</h2>
                     <div id="cart-items">
@@ -522,12 +553,12 @@
             </div>
         </div>
 
-        <!-- CHECKOUT TAB -->
+        <!-- CHECKOUT TAB (updated) -->
         <div id="checkout-tab" class="tab-content">
             <h1>Checkout</h1>
             
-            <div class="flex-container">
-                <div class="main-content">
+            <div class="checkout-container">
+                <div class="checkout-main-content">
                     <h2>Shipping Information</h2>
                     <form id="shipping-form">
                         <div class="form-group">
@@ -593,7 +624,7 @@
                     </form>
                 </div>
                 
-                <div class="cart-sidebar">
+                <aside class="checkout-cart-sidebar">
                     <h2>Order Summary</h2>
                     <div id="order-items">
                         <!-- Order items will be loaded here -->
@@ -612,10 +643,10 @@
                             <span id="order-total">RM0.00</span>
                         </div>
                     </div>
-                    <button class="btn btn-primary" onclick="showTab('order-tab')" style="width: 100%;">
+                    <button class="btn btn-primary" onclick="showTab('order-tab')" style="width: 100%; margin-top: 1rem;">
                         ← Back to Shopping
                     </button>
-                </div>
+                </aside>
             </div>
         </div>
 
@@ -639,6 +670,7 @@
                         <select id="admin-product-category" required onchange="updateSpecsForm()">
                             <option value="">Select Category</option>
                             <option value="ecs">Elastic Cloud Servers</option>
+                            <option value="evs">EVS Ultra Disk Space</option>
                             <option value="storage">Storage</option>
                             <option value="managed">Managed Services</option>
                             <option value="mysql">MySQL RDS</option>
@@ -667,9 +699,12 @@
                                     <input type="number" id="ecs-memory" step="0.1" min="0.5" value="0.5">
                                 </div>
                             </div>
+                        </div>
+                        
+                        <div id="evs-specs" style="display: none;">
                             <div class="form-group">
-                                <label for="ecs-disk">Disk (GB)</label>
-                                <input type="number" id="ecs-disk" min="1" value="40">
+                                <label for="evs-capacity">Capacity (GB)</label>
+                                <input type="number" id="evs-capacity" min="1" value="50">
                             </div>
                         </div>
                         
@@ -750,7 +785,7 @@
     <script>
         // ========== GLOBAL VARIABLES ==========
         let products = [
-            // Elastic Cloud Servers - Updated to match the image specifications (no disk)
+            // Elastic Cloud Servers
             { 
                 id: 'ecs-1', 
                 name: "IaaS ECS 2C4M", 
@@ -840,7 +875,7 @@
                 }
             },
             
-            // EVS Ultra Disk Space Products
+            // EVS Ultra Disk Space
             { 
                 id: 'evs-1', 
                 name: "EVS Ultra Disk 50GB", 
@@ -881,9 +916,6 @@
                     capacity: 1000
                 }
             },
-
-
-
             
             // Storage
             { 
@@ -981,7 +1013,7 @@
               vcpus: 2,
               ram: 8,  
               storage: 500,
-              edition: "HA Basic"
+              edition: "Basic"
             }
           },
           { 
@@ -994,7 +1026,7 @@
               vcpus: 4,
               ram: 16,
               storage: 500,
-              edition: "HA Standard"
+              edition: "Standard"
           }
         },
           { 
@@ -1007,7 +1039,7 @@
             vcpus: 8,
             ram: 32,
             storage: 500,
-            edition: "HA Premium"
+            edition: "Premium"
         }
       },
         { 
@@ -1020,7 +1052,7 @@
             vcpus: 16,
             ram: 64,
             storage: 500,
-            edition: "HA Advance"
+            edition: "Advance"
         }
       }
     ];
@@ -1050,39 +1082,31 @@
 
         // ========== HELPER FUNCTIONS ==========
         function loadProductsFromStorage() {
-            // Try to load from localStorage first
             const storedProducts = localStorage.getItem('products');
         
             if (storedProducts) {
                 try {
                     const parsedProducts = JSON.parse(storedProducts);
-                    // Only use stored products if they're valid and not empty
                     if (Array.isArray(parsedProducts) && parsedProducts.length > 0) {
                         products = parsedProducts;
                     } else {
-                        // If stored products are invalid, use defaults and save them
                         localStorage.setItem('products', JSON.stringify(products));
                     }
                 } catch (e) {
-                    // If parsing fails, use defaults and save them
                     localStorage.setItem('products', JSON.stringify(products));
                 }
             } else {
-                // If no stored products, use defaults and save them
                 localStorage.setItem('products', JSON.stringify(products));
             }
         
-            // Always render the products (whether they came from localStorage or defaults)
             renderPricingTables();
         }
 
         function populateStatesDropdown() {
             const stateSelect = document.getElementById('state');
-            // Clear existing options except the first one
             while (stateSelect.options.length > 1) {
                 stateSelect.remove(1);
             }
-            // Add Malaysian states
             malaysianStates.forEach(state => {
                 const option = document.createElement('option');
                 option.value = state;
@@ -1090,6 +1114,15 @@
                 stateSelect.appendChild(option);
             });
         }      
+
+        function escapeHtml(unsafe) {
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
 
         // ========== RENDER PRICING TABLES ==========
         function renderPricingTables() {
@@ -1201,13 +1234,12 @@
             tbody.appendChild(tr);
             });
 
-    // Add event listeners to all description links
-    document.querySelectorAll('.desc-link').forEach(link => {
-        link.addEventListener('click', function() {
-            showFullDesc(this.dataset.title, this.dataset.desc);
-        });
-    });
-}
+            document.querySelectorAll('.desc-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    showFullDesc(this.dataset.title, this.dataset.desc);
+                });
+            });
+        }
 
         function renderMySQLTable() {
             const mysqlProducts = products.filter(p => p.category === 'mysql');
@@ -1217,7 +1249,7 @@
             mysqlProducts.forEach((product) => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td>${product.specs.edition}</td>  <!-- Show the actual edition from specs -->
+                    <td>${product.specs.edition}</td>
                     <td>${product.specs.vcpus}</td>
                     <td>${product.specs.ram}GB</td>
                     <td>${product.specs.storage}GB SSD</td>
@@ -1236,6 +1268,23 @@
                 `;
                 tbody.appendChild(tr);
             });
+        }
+
+        function showFullDesc(title, desc) {
+            const modal = document.getElementById('desc-modal');
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-desc').textContent = desc;
+            modal.style.display = 'block';
+    
+            modal.querySelector('button').onclick = function() {
+                modal.style.display = 'none';
+            };
+    
+            modal.onclick = function(e) {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            };
         }
 
         // ========== TAB NAVIGATION ==========
@@ -1263,7 +1312,6 @@
             const product = products.find(p => p.id === productId);
             if (!product) return;
     
-            // Updated to use the new quantity input ID format
             const quantity = parseInt(document.getElementById(`qty-${productId}`).value) || 1;
             const existingItem = cart.find(item => item.id === `${productId}-${environment}`);
             
@@ -1407,15 +1455,14 @@
             const category = document.getElementById('admin-product-category').value;
             const specsSection = document.getElementById('specs-section');
             const ecsSpecs = document.getElementById('ecs-specs');
-            const evsSpecs = document.getElementById('evs-specs'); // NEW
+            const evsSpecs = document.getElementById('evs-specs');
             const storageSpecs = document.getElementById('storage-specs');
             const managedSpecs = document.getElementById('managed-specs');
             const mysqlSpecs = document.getElementById('mysql-specs');
             
-            // Hide all specs sections first
             specsSection.style.display = 'none';
             ecsSpecs.style.display = 'none';
-            evsSpecs.style.display = 'none'; // NEW
+            evsSpecs.style.display = 'none';
             storageSpecs.style.display = 'none';
             managedSpecs.style.display = 'none';
             mysqlSpecs.style.display = 'none';
@@ -1423,7 +1470,7 @@
             if (category === 'ecs') {
                 specsSection.style.display = 'block';
                 ecsSpecs.style.display = 'block';
-            } else if (category === 'evs') { // NEW
+            } else if (category === 'evs') {
                 specsSection.style.display = 'block';
                 evsSpecs.style.display = 'block';
             } else if (category === 'storage') {
@@ -1467,7 +1514,6 @@
             document.getElementById('admin-product-price').value = '';
             document.getElementById('admin-product-description').value = '';
             
-            // Hide specs section initially
             document.getElementById('specs-section').style.display = 'none';
         }
         
@@ -1482,11 +1528,11 @@
             document.getElementById('admin-product-price').value = product.price;
             document.getElementById('admin-product-description').value = product.description || '';
             
-            // Update specs fields based on category
             if (product.category === 'ecs') {
                 document.getElementById('ecs-vcpus').value = product.specs.vcpus;
                 document.getElementById('ecs-memory').value = product.specs.memory;
-                document.getElementById('ecs-disk').value = product.specs.disk;
+            } else if (product.category === 'evs') {
+                document.getElementById('evs-capacity').value = product.specs.capacity;
             } else if (product.category === 'storage') {
                 document.getElementById('storage-type').value = product.specs.type;
                 document.getElementById('storage-capacity').value = product.specs.capacity;
@@ -1499,7 +1545,6 @@
                 document.getElementById('mysql-edition').value = product.specs.edition;
             }
             
-            // Show the appropriate specs section
             updateSpecsForm();
             document.getElementById('product-form').style.display = 'block';
         }
@@ -1518,13 +1563,15 @@
                 return;
             }
             
-            // Get specs based on category
             let specs = {};
             if (category === 'ecs') {
                 specs = {
                     vcpus: parseInt(document.getElementById('ecs-vcpus').value),
-                    memory: parseFloat(document.getElementById('ecs-memory').value),
-                    disk: parseInt(document.getElementById('ecs-disk').value)
+                    memory: parseFloat(document.getElementById('ecs-memory').value)
+                };
+            } else if (category === 'evs') {
+                specs = {
+                    capacity: parseInt(document.getElementById('evs-capacity').value)
                 };
             } else if (category === 'storage') {
                 specs = {
@@ -1547,13 +1594,11 @@
             const product = { id, name, category, price, description, specs };
             
             if (document.getElementById('product-id').value) {
-                // Update existing product
                 const index = products.findIndex(p => p.id === id);
                 if (index !== -1) {
                     products[index] = product;
                 }
             } else {
-                // Add new product
                 products.push(product);
             }
             
@@ -1576,84 +1621,38 @@
             document.getElementById('product-form').style.display = 'none';
         }
 
-        // ========== MODAL FUNCTIONS ==========
-        function showFullDesc(title, desc) {
-            const modal = document.getElementById('desc-modal');
-            document.getElementById('modal-title').textContent = title;
-            document.getElementById('modal-desc').textContent = desc;
-            modal.style.display = 'block';
-    
-            // Close modal when clicking the close button
-            modal.querySelector('button').onclick = function() {
-            modal.style.display = 'none';
-            };
-    
-            // Close modal when clicking outside content
-            modal.onclick = function(e) {
-            if (e.target === modal) {
-                modal.style.display = 'none';
-                }
-            };
-        }
-
-        function escapeHtml(unsafe) {
-            return unsafe
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-        }
-
         // ========== INITIALIZE ==========
         document.addEventListener('DOMContentLoaded', function() {
-            // 1. First ensure products are loaded (with fallback to defaults)
             loadProductsFromStorage();
-    
-            // 2. Initialize cart after products are loaded
             initializeCart();
-    
-            // 3. Load UI components that depend on products and cart
             initializeUI();
-    
-            // 4. Set up event listeners
             setupEventListeners();
-    
-            // Demo: Enable admin access by default (remove in production)
             toggleAdminAccess(true);
         });
 
-        // Helper function to properly initialize cart
         function initializeCart() {
             try {
                 const storedCart = localStorage.getItem('cart');
                 cart = storedCart ? JSON.parse(storedCart) : [];
     
-                // Validate cart items against existing products
                 cart = cart.filter(item => products.some(p => p.id === item.id.split('-')[0]));
-                saveCart(); // Save filtered cart back to storage
+                saveCart();
             } catch (e) {
                 console.error('Error loading cart:', e);
                 cart = [];
             }
         }
 
-        // Helper function to initialize UI components
         function initializeUI() {
             loadCart();
             renderPricingTables();
             populateStatesDropdown();
-    
-            // Show order tab by default
             showTab('order-tab'); 
         }
 
-        // Helper function for all event listeners
         function setupEventListeners() {
-            // Order page
             document.getElementById('clear-cart').addEventListener('click', clearCart);
     
-            // Checkout page
             document.getElementById('place-order').addEventListener('click', function() {
                 if (validateForm()) {
                     alert('Thank you for your order!');
@@ -1663,7 +1662,6 @@
                 }
             });
     
-            // Admin page
             document.getElementById('add-product-btn').addEventListener('click', showAddForm);
             document.getElementById('save-product').addEventListener('click', saveProduct);
             document.getElementById('cancel-edit').addEventListener('click', hideForm);
