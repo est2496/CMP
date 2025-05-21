@@ -1,5 +1,5 @@
 <!-- 
-  Original Author: Calvin
+  Original Idea: Bernard
   Edited by: Estella
   Modified Date: 2025-05-21
   Description: This is the main HTML page version 1 for the website of CMP service catalog
@@ -148,12 +148,12 @@
             flex: 3;
             display: flex;
             flex-direction: column;
-            gap: 2rem;
+            gap: 1rem; /* Reduced from 2rem for tighter spacing */
         }
         .cart-sidebar {
             flex: 1;
             position: sticky;
-            top: 20px;
+            top: 120px;
             background: white;
             padding: 1.5rem;
             border-radius: 8px;
@@ -161,6 +161,23 @@
             height: fit-content;
             max-height: 90vh;
             overflow-y: auto;
+        }
+
+        /* Adjusted heading styles for tighter spacing */
+        #order-tab h1 {
+            margin-bottom: 0.25rem; /* Reduced from default */
+        }
+        .cart-sidebar h2 {
+            margin-top: 0;
+        }
+
+        /* Environment selector - tighter spacing */
+        .environment-selector {
+            margin: 0.25rem 0 0.75rem; /* Tighter vertical margins */
+            padding: 0.75rem; /* Slightly reduced padding */
+            background-color: var(--light);
+            border-radius: 4px;
+            width: 755px;
         }
 
         /* Cart item styles */
@@ -256,12 +273,6 @@
             width: 60px;
             text-align: center;
             padding: 0.5rem;
-        }
-        .environment-selector {
-            margin: 1rem 0;
-            padding: 1rem;
-            background-color: var(--light);
-            border-radius: 4px;
         }
 
         /* Modal styles */
@@ -384,6 +395,9 @@
                 width: 100%;
                 margin-top: 2rem;
             }
+            .environment-selector {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -404,19 +418,20 @@
     <div class="container">
         <!-- ORDER TAB -->
         <div id="order-tab" class="tab-content active">
-            <h1>Product Catalog</h1>
-            
-            <!-- Server Environment Selector -->
-            <div class="environment-selector" style="width: 755px;">
-                <label for="server-environment">Server Environment:</label>
-                <select id="server-environment" style="width: 100%;">
-                    <option value="az1">Availability Zone1 (AZ1)</option>
-                    <option value="az2">Availability Zone2 (AZ2)</option>
-                </select>
-            </div>
-
             <div class="page-container">
                 <div class="main-content-container">
+                    <h1>Product Catalog</h1>
+                    
+                    <!-- Server Environment Selector - now with tighter spacing -->
+                    <div class="environment-selector">
+                        <label for="server-environment">Server Environment:</label>
+                        <select id="server-environment" style="width: 100%;">
+                            <option value="dev">Development</option>
+                            <option value="prod">Production</option>
+                            <option value="dr">Disaster Recovery</option>
+                        </select>
+                    </div>
+
                     <!-- ELASTIC CLOUD SERVERS TABLE -->
                     <div class="pricing-section">
                         <h2>Elastic Cloud Servers</h2>
@@ -553,7 +568,7 @@
             </div>
         </div>
 
-        <!-- CHECKOUT TAB (updated) -->
+        <!-- CHECKOUT TAB -->
         <div id="checkout-tab" class="tab-content">
             <h1>Checkout</h1>
             
@@ -1306,8 +1321,9 @@
         // ========== CART FUNCTIONS ==========
         function addProductToCart(productId) {
             const environment = document.getElementById('server-environment').value;
-            const envName = environment === 'az1' ? 'AZ1' : 'AZ2';
-
+            const envName = environment === 'dev' ? 'Dev' : 
+                        environment === 'prod' ? 'Prod' : 'DR';
+    
             const product = products.find(p => p.id === productId);
             if (!product) return;
     
